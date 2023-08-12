@@ -17,17 +17,18 @@ public class MailSendere {
 
     private Map<String, String> otpData = new HashMap<>();
 
-    public void sendOtp(String toEmail) {
-        String otp = generateOtp();
-        otpData.put(toEmail, otp); // Store OTP for validation
-
+    public void sendSimpleEmail(String toEmail,
+                                String body,
+                                String subject) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject("Your OTP Code");
-        message.setText("Your OTP code is: " + otp);
 
-        System.out.printf("otp "+ otp);
+        message.setFrom("mayurpolojwar1234@gmail.com");
+        message.setTo(toEmail);
+        message.setText(body);
+        message.setSubject(subject);
+
         mailSender.send(message);
+        System.out.println("Mail Send ...");
     }
 
     public boolean validateOtp(String email, String userInputOtp) {
