@@ -1,5 +1,6 @@
 package com.loan.service.mailsender;
 
+import com.loan.entity.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -31,9 +32,12 @@ public class MailSendere {
         System.out.println("Mail Send ...");
     }
 
-    public boolean validateOtp(String email, String userInputOtp) {
-        String validOtp = otpData.get(email);
-        return validOtp != null && validOtp.equals(userInputOtp);
+    public boolean validateOtp(String otp, User user) {
+        if (otp.equals(user.getOtp())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static String generateOtp() {

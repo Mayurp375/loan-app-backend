@@ -16,6 +16,9 @@ public class RegistrationCon {
     @Autowired
     RegistrationInterface registrationInterface;
 
+    @Autowired
+    OtpVerify otpVerify;
+
 
 //    http://localhost:8080/vi/hello
 
@@ -28,11 +31,21 @@ public class RegistrationCon {
 //    http://localhost:8080/vi/register
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user){
+    public ResponseEntity<User> register(@RequestBody User user) {
 
         log.info("inside registration method");
 
-        User register = registrationInterface.register(user);
-        return new ResponseEntity<>(register, HttpStatus.OK) ;
+
+        User build = User.builder().email(user.getEmail()).otp(user.getOtp()).build();
+
+        User register = null;
+        try {
+            otpVerify.validateOtp(build);
+            register = registrationInterface.register(user);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+        return new ResponseEntity<>(register, HttpStatus.OK);
     }
 }
