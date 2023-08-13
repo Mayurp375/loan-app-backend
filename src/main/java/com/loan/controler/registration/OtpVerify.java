@@ -1,39 +1,34 @@
 package com.loan.controler.registration;
 
+import com.loan.entity.User.OtpValidationRequest;
 import com.loan.entity.User.User;
-import com.loan.service.mailsender.MailSendere;
+import com.loan.service.register.RegisterService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Slf4j
+@RequestMapping("/v1")
 public class OtpVerify {
 
     @Autowired
-    private MailSendere mailSendere;
+    RegisterService registerService;
 
-    @GetMapping("/otp-verify/{otp}")
-    public ResponseEntity<String> otpVerify(@PathVariable("otp") String otp) {
-        return new ResponseEntity(otp, HttpStatus.OK);
+
+    @PostMapping("/send-otp")
+    public String sendOtp(@RequestBody User otpRequest) {
+        log.info("Inside sendOtp for Email: " + otpRequest.getEmail());
+        registerService.register(otpRequest);
+        return "OTP sent successfully to " + otpRequest.getEmail();
     }
 
-    @PostMapping("/validateOtp")
-    public ResponseEntity<Boolean> validateOtp(@RequestBody User user) {
-        boolean validateOtp = false;
-        try{
-            if (validateOtp){
-                mailSendere.validateOtp(user.getOtp(), user);
-                System.out.println("validate");
-            }else {
-                System.out.println("otp not validate");
-            }
-        }catch (Exception e){
-            e.getMessage();
-        }
-        return new ResponseEntity(validateOtp,HttpStatus.OK);
+    @PostMapping("/validate-otp")
+    public String validateOtp(@RequestBody OtpValidationRequest otpValidationRequest) {
+        log.info("Inside validateOtp for Email: " + otpValidationRequest.getEmail());
+        return registerService.validateOtp(otpValidationRequest);
     }
 }
-
-
-

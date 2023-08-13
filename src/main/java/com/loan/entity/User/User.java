@@ -1,9 +1,6 @@
 package com.loan.entity.User;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,13 +35,5 @@ public class User {
 
     private String otp;
 
-    public User(String name, String email, String mobilNumber, String city, String state, Date dataOfBirth, String password) {
-        this.name = name;
-        this.email = email;
-        this.mobilNumber = mobilNumber;
-        this.city = city;
-        this.state = state;
-        this.dataOfBirth = dataOfBirth;
-        this.password = password;
-    }
+
 }
