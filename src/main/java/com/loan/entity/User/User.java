@@ -19,20 +19,27 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "Name")
     private String name;
 
+    @Column(name = "Email")
     private String email;
 
+    @Column(name = "Mobile Number")
     private String mobilNumber;
 
+    @Column(name = "City")
     private String city;
 
+    @Column(name = "State")
     private String state;
+
 
     private Date dataOfBirth;
 
     private String password;
 
+    @Transient
     private String otp;
 
 

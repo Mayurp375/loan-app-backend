@@ -3,7 +3,9 @@ package com.loan.service.login;
 import com.loan.entity.User.User;
 import com.loan.repository.register.RegistrationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LoginServiceImp implements LoginService{
 
     @Autowired

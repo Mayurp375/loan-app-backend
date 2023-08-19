@@ -44,7 +44,7 @@ public class RegisterService implements RegistrationInterface {
             return "OTP is invalid!";
         }
 
-        if ( storedOtp.equalsIgnoreCase(otpValidationRequest.getOtpNumber().toString())) {
+        if (storedOtp.equalsIgnoreCase(otpValidationRequest.getOtpNumber().toString())) {
             User userToRegister = temporaryUsers.get(otpValidationRequest.getEmail());
             registrationRepo.save(userToRegister); // Register the user now
             otpMap.remove(otpValidationRequest.getEmail());
