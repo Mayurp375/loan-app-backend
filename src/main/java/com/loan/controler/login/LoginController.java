@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v1")
 public class LoginController {
 
     @Autowired
     private LoginServiceImp userService;
 
+    //http://localhost:8080/v1/login
     @PostMapping("/login")
     public String loginUser(@RequestParam String email, @RequestParam String password) {
         User user = userService.validateUser(email, password);
@@ -25,4 +26,7 @@ public class LoginController {
             return "Invalid email or password";
         }
     }
+
+
+
 }

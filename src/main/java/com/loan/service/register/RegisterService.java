@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 @Service
 @Slf4j
@@ -34,7 +35,13 @@ public class RegisterService implements RegistrationInterface {
     }
 
     public String validateOtp(OtpValidationRequest otpValidationRequest) {
+
+        if (registrationRepo.findByEmail(otpValidationRequest.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already in use.");
+        }
+
         String storedOtp = otpMap.get(otpValidationRequest.getEmail());
+
         log.info("Validating OTP for Email: " + otpValidationRequest.getEmail());
         log.info("Received OTP: " + otpValidationRequest.getOtpNumber());
         log.info("Stored OTP: " + storedOtp);
@@ -54,4 +61,31 @@ public class RegisterService implements RegistrationInterface {
             return "OTP is invalid!";
         }
     }
+
+
+    public boolean verifyOtp(String email, String otp) {
+        mailSendere.sendSimpleEmail(email, otp, "Your requested One time password");
+        String storedOtp = otpMap.get(email);
+        if (storedOtp != null && storedOtp.equals(otp)) {
+            otpMap.remove(email);
+            return true;
+        }
+        return false;
+    }
+
+    public String generateOtp(String email) {
+        String otp = String.valueOf(new Random().nextInt(999999)); // 6-digit OTP
+        otpMap.put(email, otp);
+        // Send OTP to the email here (e.g., via email service)
+        return otp;
+    }
+
+    public void updatePassword(String email, String newPassword) {
+        User user = registrationRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPassword(newPassword); // Should be encrypted
+        registrationRepo.save(user);
+    }
+
+
+
 }
