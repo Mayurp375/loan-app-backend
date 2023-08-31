@@ -43,5 +43,6 @@ public class User {
     @Transient
     private String otp;
 
-
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ExtendedUserProfile extendedProfile;
 }

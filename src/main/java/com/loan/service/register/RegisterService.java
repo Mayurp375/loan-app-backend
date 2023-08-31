@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 @Service
 @Slf4j
@@ -73,12 +72,15 @@ public class RegisterService implements RegistrationInterface {
         return false;
     }
 
-    public String generateOtp(String email) {
-        String otp = String.valueOf(new Random().nextInt(999999)); // 6-digit OTP
+    public String updatePasswodOtp(String email) {
+        String otp = MailSendere.generateOtp();
+        mailSendere.sendSimpleEmail(email, otp, "Your requested One time password");
         otpMap.put(email, otp);
-        // Send OTP to the email here (e.g., via email service)
-        return otp;
+        //temporaryUsers.put(user.getEmail(), user);
+        System.out.println(otp);
+        return otp;  // Just return the user, don't save in the database yet
     }
+
 
     public void updatePassword(String email, String newPassword) {
         User user = registrationRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));

@@ -4,13 +4,11 @@ package com.loan.controler.login;
 import com.loan.entity.User.User;
 import com.loan.service.login.LoginServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1")
+@CrossOrigin(origins = "http://localhost:4200")
 public class LoginController {
 
     @Autowired
