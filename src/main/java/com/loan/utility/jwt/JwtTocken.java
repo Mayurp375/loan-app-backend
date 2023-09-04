@@ -1,29 +1,30 @@
 package com.loan.utility.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
-import java.util.Date;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
 
 public class JwtTocken {
-    private static final String SECRET_KEY = "MYSecretKey";
+    private static final String TOKEN_SECRET = "Warlock";
 
-    public static String generateToken(String subject) {
-        return Jwts.builder()
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours token validity
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
-    }
 
-    public static Claims decodeToken(String token) {
-        Jws<Claims> claimsJws = Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token);
+    public String createToken(int id)   {
+        try {
+            //to set algorithm
+            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
 
-        return claimsJws.getBody();
+            String token = JWT.create()
+                    .withClaim("user_id", id)
+                    .sign(algorithm);
+            return token;
+
+        } catch (JWTCreationException exception) {
+            exception.printStackTrace();
+            //log Token Signing Failed
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -16,18 +16,10 @@ import java.util.Map;
 @Slf4j
 @RequestMapping("/v1")
 @CrossOrigin(origins = "http://localhost:4200")   //
-public class OtpVerify {
+public class RegistrationAndUpdatePassword {
 
     @Autowired
     RegisterService registerService;
-
-//http://localhost:8080/v1/send-otp
-//    @PostMapping("/send-otp")
-//    public String sendOtp(@RequestBody User otpRequest) {
-//        log.info("Inside sendOtp for Email: " + otpRequest.getEmail());
-//        registerService.register(otpRequest);
-//        return "OTP sent successfully to " + otpRequest.getEmail();
-//    }
 
     @PostMapping("/send-otp")
     public ResponseEntity<Map<String, String>> sendOtp(@RequestBody User otpRequest) {
@@ -43,8 +35,13 @@ public class OtpVerify {
     @PostMapping("/validate-otp")
     public ResponseEntity<String> validateOtp(@RequestBody OtpValidationRequest otpValidationRequest) {
         log.info("Inside validateOtp for Email: " + otpValidationRequest.getEmail());
-        return new ResponseEntity<>(registerService.validateOtp(otpValidationRequest), HttpStatus.BAD_REQUEST);
+        registerService.validateOtp(otpValidationRequest);
+
+        return new ResponseEntity<>(registerService.validateOtp(otpValidationRequest), HttpStatus.OK);
     }
+
+
+    // http://localhost:8080/v1/reset/generate-otp
 
 
     @PostMapping("/reset/generate-otp")
@@ -52,6 +49,9 @@ public class OtpVerify {
         String otp = registerService.updatePasswodOtp(email);
         return ResponseEntity.ok("OTP sent to " + email + ". (For testing purposes, OTP is: " + otp + ")");
     }
+
+
+    // http://localhost:8080/v1/reset/update-password
 
     @PatchMapping("/reset/update-password")
     public ResponseEntity<String> updatePassword(@RequestParam String email,
