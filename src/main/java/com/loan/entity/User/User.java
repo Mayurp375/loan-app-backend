@@ -1,10 +1,9 @@
 package com.loan.entity.User;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,33 +13,36 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "Name")
     private String name;
 
+    @Column(name = "Email")
     private String email;
 
+    @Column(name = "Mobile Number")
     private String mobilNumber;
 
+    @Column(name = "City")
     private String city;
 
+    @Column(name = "State")
     private String state;
+
 
     private Date dataOfBirth;
 
     private String password;
 
-    public User(String name, String email, String mobilNumber, String city, String state, Date dataOfBirth, String password) {
-        this.name = name;
-        this.email = email;
-        this.mobilNumber = mobilNumber;
-        this.city = city;
-        this.state = state;
-        this.dataOfBirth = dataOfBirth;
-        this.password = password;
-    }
+    @Transient
+    private String otp;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ExtendedUserProfile extendedProfile;
 }
