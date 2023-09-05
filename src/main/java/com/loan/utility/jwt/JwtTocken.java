@@ -3,12 +3,14 @@ package com.loan.utility.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class JwtTocken {
     private static final String TOKEN_SECRET = "Warlock";
 
 
-    public String createToken(int id)   {
+    public String createToken(long id)   {
         try {
             //to set algorithm
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);

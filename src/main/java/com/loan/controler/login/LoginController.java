@@ -1,10 +1,11 @@
 package com.loan.controler.login;
 
 
-import com.loan.entity.User.User;
 import com.loan.entity.User.LoginDTO;
 import com.loan.service.login.LoginServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,12 +19,15 @@ public class LoginController {
     //http://localhost:8080/v1/login
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody LoginDTO loginDTO) {
-        User user = userService.validateUser(loginDTO.getEmail(), loginDTO.getPassword());
-        if (user != null) {
-            return "Login successful for user: " + loginDTO.getEmail();
+    public ResponseEntity<String> loginUser(@RequestBody LoginDTO loginDTO) {
+        String token = userService.validateUser(loginDTO.getEmail(), loginDTO.getPassword());
+
+        if (token != null) {
+            return ResponseEntity.status(HttpStatus.OK).header("Authorization",token).body("login success");
+//            return ResponseEntity.status(HttpStatus.OK).body("user login success");
+//                    "Login successful for user: " + loginDTO.getEmail();
         } else {
-            return "Invalid email or password";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email or password");
         }
     }
 }
