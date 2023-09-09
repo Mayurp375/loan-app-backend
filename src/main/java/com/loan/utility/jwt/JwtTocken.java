@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 public class JwtTocken {
     private static final String TOKEN_SECRET = "Warlock";
 
-
-    public String createToken(long id)   {
+    public String createToken(long id) {
         try {
             //to set algorithm
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);

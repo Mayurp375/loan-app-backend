@@ -13,8 +13,6 @@ public class MailSendere {
     @Autowired
     private JavaMailSender mailSender;
 
-
-
     public void sendSimpleEmail(String toEmail, String body, String subject) {
         SimpleMailMessage message = new SimpleMailMessage();
 
@@ -26,7 +24,6 @@ public class MailSendere {
         mailSender.send(message);
         System.out.println("Mail Send ...");
     }
-
 
 
     public static String generateOtp() {

@@ -36,7 +36,7 @@ public class RegisterService implements RegistrationInterface {
     public String validateOtp(OtpValidationRequest otpValidationRequest) {
 
         if (registrationRepo.findByEmail(otpValidationRequest.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already in use.");
+            return "Email already in use.";
         }
 
         String storedOtp = otpMap.get(otpValidationRequest.getEmail());
@@ -83,11 +83,11 @@ public class RegisterService implements RegistrationInterface {
 
 
     public void updatePassword(String email, String newPassword) {
-        User user = registrationRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = registrationRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         user.setPassword(newPassword); // Should be encrypted
         registrationRepo.save(user);
     }
-
 
 
 }

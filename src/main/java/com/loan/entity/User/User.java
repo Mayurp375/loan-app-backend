@@ -35,7 +35,6 @@ public class User {
     @Column(name = "State")
     private String state;
 
-
     private Date dataOfBirth;
 
     private String password;

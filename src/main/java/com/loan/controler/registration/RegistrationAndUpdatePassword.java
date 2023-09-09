@@ -5,7 +5,6 @@ import com.loan.entity.User.User;
 import com.loan.service.register.RegisterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +20,7 @@ public class RegistrationAndUpdatePassword {
     @Autowired
     RegisterService registerService;
 
+    //http://localhost:8080/v1/send-otp
     @PostMapping("/send-otp")
     public ResponseEntity<Map<String, String>> sendOtp(@RequestBody User otpRequest) {
         log.info("Inside sendOtp for Email: " + otpRequest.getEmail());
@@ -33,11 +33,10 @@ public class RegistrationAndUpdatePassword {
 
     // http://localhost:8080/v1/validate-otp
     @PostMapping("/validate-otp")
-    public ResponseEntity<String> validateOtp(@RequestBody OtpValidationRequest otpValidationRequest) {
+    public String validateOtp(@RequestBody OtpValidationRequest otpValidationRequest) {
         log.info("Inside validateOtp for Email: " + otpValidationRequest.getEmail());
-        registerService.validateOtp(otpValidationRequest);
+        return  registerService.validateOtp(otpValidationRequest);
 
-        return new ResponseEntity<>(registerService.validateOtp(otpValidationRequest), HttpStatus.OK);
     }
 
 

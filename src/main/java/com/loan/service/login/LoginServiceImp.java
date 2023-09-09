@@ -7,22 +7,31 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
-public class LoginServiceImp implements LoginService{
+public class LoginServiceImp implements LoginService {
 
     @Autowired
     RegistrationRepo registrationRepo;
     @Autowired
     JwtTocken jwtTocken;
+
     @Override
     public String validateUser(String email, String password) {
-       log.atTrace();
+        log.atTrace();
         User findByEmail = registrationRepo.findByEmail(email)
                 .filter(user -> user.getPassword().equals(password))
                 .orElse(null);
         String token = jwtTocken.createToken(findByEmail.getId());
         return token;
     }
+
+    @Override
+    public List<User> getAll() {
+        return registrationRepo.findAll();
+    }
+
 
 }
