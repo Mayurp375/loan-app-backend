@@ -19,15 +19,15 @@ public class LoginController {
     //http://localhost:8080/v1/login
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<LoginDTO> loginUser(@RequestBody LoginDTO loginDTO) {
         String token = userService.validateUser(loginDTO.getEmail(), loginDTO.getPassword());
 
         if (token != null) {
-            return ResponseEntity.status(HttpStatus.OK).header("Authorization",token).body("login success");
+            return ResponseEntity.status(HttpStatus.OK).header("Authorization",token).body(loginDTO);
 //            return ResponseEntity.status(HttpStatus.OK).body("user login success");
 //                    "Login successful for user: " + loginDTO.getEmail();
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email or password");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginDTO);
         }
     }
 }
