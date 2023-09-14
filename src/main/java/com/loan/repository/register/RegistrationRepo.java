@@ -12,6 +12,8 @@ public interface RegistrationRepo extends JpaRepository<User,Long> {
     @Query(value = "SELECT * FROM user where email= :email",nativeQuery = true)
     Optional<User> findByEmail(String email);
 
+
+
 //    @Query(value = "SELECT * FROM user where email= :emailId",nativeQuery = true)
 //    User findByEmailid(String emailId);
 

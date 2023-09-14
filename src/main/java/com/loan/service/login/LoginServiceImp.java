@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @Slf4j
 public class LoginServiceImp implements LoginService {
@@ -23,15 +21,8 @@ public class LoginServiceImp implements LoginService {
         log.atTrace();
         User findByEmail = registrationRepo.findByEmail(email)
                 .filter(user -> user.getPassword().equals(password))
-                .orElse(null);
+                .orElseThrow(() -> new RuntimeException("not found"));
         String token = jwtTocken.createToken(findByEmail.getId());
         return token;
     }
-
-    @Override
-    public List<User> getAll() {
-        return registrationRepo.findAll();
-    }
-
-
 }
