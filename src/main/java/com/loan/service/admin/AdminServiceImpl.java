@@ -18,7 +18,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void deleteApplication(String email) {
-        registrationRepo.delete(registrationRepo.findByEmail(email).orElseThrow());
+    public void deleteApplication(long id) {
+        User user = registrationRepo.findById(id).orElseThrow();
+        registrationRepo.delete(user);
     }
 }

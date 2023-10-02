@@ -9,5 +9,5 @@ import java.util.List;
 public interface AdminService {
     List<User> getAll();
 
-    void deleteApplication(String email);
+    void deleteApplication(long id);
 }

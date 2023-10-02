@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*Admin*/
 @RestController
@@ -25,10 +27,14 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAll());
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> deletApplication(@RequestParam String email){
+    //http://localhost:8080/admin/delete
+    @DeleteMapping("delete")
+    public ResponseEntity<Map<String, String>> deletApplication(@RequestParam long id){
 
-        adminService.deleteApplication(email);
-        return ResponseEntity.status(HttpStatus.OK).body("Your application is rejected.");
+        adminService.deleteApplication(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Deleted successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 }

@@ -18,11 +18,18 @@ public class LoginServiceImp implements LoginService {
 
     @Override
     public String validateUser(String email, String password) {
-        log.atTrace();
-        User findByEmail = registrationRepo.findByEmail(email)
-                .filter(user -> user.getPassword().equals(password))
-                .orElseThrow(() -> new RuntimeException("not found"));
-        String token = jwtTocken.createToken(findByEmail.getId());
-        return token;
+//        log.atTrace();
+//        User findByEmail = registrationRepo.findByEmail(email)
+//                .filter(user -> user.getPassword().equals(password))
+//                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+//        String token = jwtTocken.createToken(findByEmail.getId());
+//        return token;
+        User user = registrationRepo.findByEmail(email).orElse(null);
+
+        if (user != null && user.getPassword().equals(password)) {
+            return jwtTocken.createToken(user.getId());
+        }
+
+        throw new RuntimeException("Invalid email or password");
     }
 }
