@@ -1,5 +1,6 @@
 package com.loan.service.mailsender;
 
+import com.loan.entity.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,22 +18,26 @@ public class MailSendere {
 
     private Map<String, String> otpData = new HashMap<>();
 
-    public void sendOtp(String toEmail) {
-        String otp = generateOtp();
-        otpData.put(toEmail, otp); // Store OTP for validation
-
+    public void sendSimpleEmail(String toEmail,
+                                String body,
+                                String subject) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject("Your OTP Code");
-        message.setText("Your OTP code is: " + otp);
 
-        System.out.printf("otp "+ otp);
+        message.setFrom("mayurpolojwar1234@gmail.com");
+        message.setTo(toEmail);
+        message.setText(body);
+        message.setSubject(subject);
+
         mailSender.send(message);
+        System.out.println("Mail Send ...");
     }
 
-    public boolean validateOtp(String email, String userInputOtp) {
-        String validOtp = otpData.get(email);
-        return validOtp != null && validOtp.equals(userInputOtp);
+    public boolean validateOtp(String otp, User user) {
+        if (otp.equals(user.getOtp())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static String generateOtp() {

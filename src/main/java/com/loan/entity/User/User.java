@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class User {
 
     @Id
@@ -33,6 +35,8 @@ public class User {
     private Date dataOfBirth;
 
     private String password;
+
+    private String otp;
 
     public User(String name, String email, String mobilNumber, String city, String state, Date dataOfBirth, String password) {
         this.name = name;

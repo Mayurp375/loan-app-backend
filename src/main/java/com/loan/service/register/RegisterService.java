@@ -2,7 +2,7 @@ package com.loan.service.register;
 
 import com.loan.entity.User.User;
 import com.loan.repository.register.RegistrationRepo;
-import com.loan.service.mailsender.Mail;
+import com.loan.service.mailsender.MailSendere;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,13 @@ public class RegisterService implements RegistrationInterface {
     RegistrationRepo registrationRepo;
 
     @Autowired
-    Mail mail;
+    MailSendere mail1;
 
     @Override
     public User register(User user) {
+        mail1.sendSimpleEmail(user.getEmail(), MailSendere.generateOtp(),
+                "Your requested One time password ");
+        log.info("OTP is sent Successfully");
         return registrationRepo.save(user);
     }
 
